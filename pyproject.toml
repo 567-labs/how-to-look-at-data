@@ -1,0 +1,11 @@
+[project]
+name = "chroma-workshop"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "ipykernel>=6.29.5",
+    "ipython>=8.18.1",
+    "kura>=0.4.4",
+]
