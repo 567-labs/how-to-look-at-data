@@ -1,5 +1,7 @@
 # Chroma Workshop: Topic Modeling for RAG Systems
 
+> Prerequisites: Make sure that you've downloaded and saved the 560 conversations to a file at the path `./data/conversations.json`
+
 ## Installation
 
 1. Clone this repository:
