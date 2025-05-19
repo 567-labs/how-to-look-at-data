@@ -21,6 +21,7 @@
 ## Notebooks
 
 1. **1. Cluster Conversations**: Understand query patterns in large RAG applications using topic modeling and Kura, with real user queries from the Weights & Biases documentation. This notebook covers data preparation, clustering, and analysis of user query themes.
+2. **2. Better Summaries**: Learn how to create domain-specific, concise summaries for Weights & Biases queries to produce more meaningful and actionable topic clusters.
 
 ## About
 
