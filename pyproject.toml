@@ -5,7 +5,12 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
+    "instructor-classify",
     "ipykernel>=6.29.5",
     "ipython>=8.18.1",
     "kura>=0.4.4",
+    "streamlit-shortcuts>=0.2.0",
 ]
+
+[tool.uv.sources]
+instructor-classify = { git = "https://github.com/jxnl/instructor-classify" }
