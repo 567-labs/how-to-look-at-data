@@ -1,178 +1,121 @@
 import streamlit as st
 import json
 import os
-from streamlit_shortcuts import button
-from pathlib import Path
 
-# Ensure data directory exists
-Path("./data").mkdir(exist_ok=True)
-
-# App title and layout configuration
-st.set_page_config(layout="wide", page_title="Simple Annotation Tool")
-st.title("Simple Annotation Tool")
-
-
-# Load conversations
-@st.cache_data
-def load_conversations():
-    try:
-        with open("./data/conversations.json", "r") as f:
-            return json.load(f)
-    except FileNotFoundError:
-        st.error("conversations.json file not found in ./data directory!")
-        return []
+# Page configuration
+st.set_page_config(layout="wide", page_title="Conversation Labeling App")
+label_options = [
+    "artifact",
+    "other",
+    "visualisation",
+    "integrations",
+]
 
 
-# Initialize or load labels
-def load_labels():
-    labels_file = "./data/labels.jsonl"
-    labels = {}
-    if os.path.exists(labels_file):
-        with open(labels_file, mode="r") as f:
+# Function to read JSONL files
+def read_jsonl(file_path):
+    data = []
+    if os.path.exists(file_path):
+        with open(file_path, "r") as f:
             for line in f:
-                if line.strip():
-                    item = json.loads(line)
-                    labels[item["query_id"]] = item["label"]
-    return labels
+                try:
+                    item = json.loads(line.strip())
+                    data.append(item)
+                except json.JSONDecodeError:
+                    # Skip lines that aren't valid JSON
+                    continue
+    return data
 
 
-# Save label
-def save_label(conversation, label_value):
-    labels_file = "./data/labels.jsonl"
-    label_data = {
-        "query_id": conversation["query_id"],
-        "query": conversation["query"],
-        "matching_document": conversation["matching_document"],
-        "label": label_value,
-    }
+# Read the data files
+generated_data = read_jsonl("./data/generated.jsonl")
+labeled_data = read_jsonl("./data/labels.jsonl")
 
-    # Append to the jsonl file
-    with open(labels_file, mode="a") as f:
-        f.write(json.dumps(label_data) + "\n")
+# Statistics at the top
+st.markdown("## Statistics")
+st.markdown(f"**Total conversations**: {len(generated_data)}")
+st.markdown(f"**Labeled conversations**: {len(labeled_data)}")
+st.markdown(f"**Remaining**: {len(generated_data) - len(labeled_data)}")
 
-    # Update session state
-    st.session_state.labels[conversation["query_id"]] = label_value
-    st.session_state.next_item = True
+# Progress bar
+progress = len(labeled_data) / len(generated_data) if generated_data else 0
+st.progress(progress)
 
+# Main content with conversation labeler
+st.markdown("## Conversation Labeler")
 
-# Label functions
-def label_artifact():
-    if st.session_state.current_index < len(st.session_state.conversations):
-        save_label(
-            st.session_state.conversations[st.session_state.current_index], "artifact"
+# Get unlabeled conversations (those in generated but not in labeled)
+labeled_ids = {item.get("query_id") for item in labeled_data}
+unlabeled_conversations = [
+    item for item in generated_data if item.get("query_id") not in labeled_ids
+]
+
+if unlabeled_conversations:
+    # Display the first unlabeled conversation
+    current_conv = unlabeled_conversations[0]
+
+    # Create two columns for the main interface
+    col1, col2 = st.columns([2, 1])
+
+    with col1:
+        # Create a combined text area with query and document
+        combined_text = f"<query>\n{current_conv.get('query', 'No query')}\n\n<relevant_document>\n{current_conv.get('matching_document', 'No document')}"
+
+        # Use a text area with fixed height to make it scrollable
+        st.text_area(
+            "Review the conversation",
+            combined_text,
+            height=500,  # Adjust height as needed
+            disabled=True,  # Make it read-only
         )
 
+    with col2:
+        st.markdown("### Select Labels:")
 
-def label_no_artifact():
-    if st.session_state.current_index < len(st.session_state.conversations):
-        save_label(
-            st.session_state.conversations[st.session_state.current_index],
-            "not_artifact",
-        )
+        # Define common label options (you can customize this list)
 
+        # Get predefined labels for this item if they exist
+        predefined_labels = current_conv.get("labels", [])
 
-# Navigation functions
-def prev_item():
-    if st.session_state.current_index > 0:
-        st.session_state.current_index -= 1
+        # Create vertically aligned checkboxes for each label
+        selected_labels = []
+        for label in label_options:
+            # Pre-check the box if this label is predefined
+            if st.checkbox(
+                label, key=f"label_{label}", value=label in predefined_labels
+            ):
+                selected_labels.append(label)
 
+        # Add spacing before save button
+        st.write("")
+        st.write("")
 
-def next_item():
-    if st.session_state.current_index < len(st.session_state.conversations) - 1:
-        st.session_state.current_index += 1
+        # Save button
+        if st.button("Save Labels", type="primary", use_container_width=True):
+            if selected_labels:
+                # Create a copy of the current conversation with labels
+                labeled_conv = current_conv.copy()
+                labeled_conv["labels"] = selected_labels
 
+                # Append to labels.jsonl
+                with open("./data/labels.jsonl", "a") as f:
+                    f.write(json.dumps(labeled_conv) + "\n")
 
-# Initialize session state
-if "current_index" not in st.session_state:
-    st.session_state.current_index = 0
-    st.session_state.conversations = load_conversations()
-    st.session_state.labels = load_labels()
-    st.session_state.next_item = False
+                st.success("Labels saved successfully!")
+                st.rerun()
+            else:
+                st.warning("Please select at least one label.")
 
-# Initialize button counter for streamlit_shortcuts
-if "button_key_counter" not in st.session_state:
-    st.session_state.button_key_counter = 0
+        # Skip button
+        if st.button("Skip", use_container_width=True):
+            # Preserve existing labels when skipping
+            labeled_conv = current_conv.copy()
+            # Keep the predefined labels instead of clearing them
 
-# Handle navigation from previous interactions
-if st.session_state.next_item:
-    if st.session_state.current_index < len(st.session_state.conversations) - 1:
-        st.session_state.current_index += 1
-    st.session_state.next_item = False
+            with open("./data/labels.jsonl", "a") as f:
+                f.write(json.dumps(labeled_conv) + "\n")
 
-# Progress info in sidebar
-with st.sidebar:
-    st.header("Annotation Progress")
-    total = len(st.session_state.conversations)
-    labeled = len(st.session_state.labels)
-    remaining = total - labeled
-
-    st.write(f"**Labeled:** {labeled}/{total}")
-    st.write(f"**Remaining:** {remaining}")
-    st.progress(labeled / total if total > 0 else 0)
-
-    st.subheader("Keyboard Shortcuts")
-    st.write("**Ctrl+E:** Artifact")
-    st.write("**Ctrl+R:** No Artifact")
-    st.write("**Ctrl+P:** Previous")
-    st.write("**Ctrl+N:** Next")
-
-# Main display area - simple layout with plain text
-if st.session_state.conversations:
-    if st.session_state.current_index < len(st.session_state.conversations):
-        conversation = st.session_state.conversations[st.session_state.current_index]
-
-        # Simple item indicator at the top
-        status_row = st.columns([3, 1])
-        with status_row[0]:
-            st.text(
-                f"Item {st.session_state.current_index + 1} of {len(st.session_state.conversations)}"
-            )
-        with status_row[1]:
-            already_labeled = conversation["query_id"] in st.session_state.labels
-            if already_labeled:
-                label = st.session_state.labels[conversation["query_id"]]
-                st.text(f"[LABELED: {label}]")
-
-        # Clear keyboard shortcuts reminder at the top
-        st.markdown("**Ctrl+E**: Mark as Artifact | **Ctrl+R**: Mark as No-Artifact")
-        st.markdown("---")
-
-        # Show query | document in a clean side-by-side layout
-        cols = st.columns(2)
-
-        with cols[0]:
-            st.text("QUERY:")
-            st.text_area(
-                "",
-                conversation["query"],
-                height=100,
-                disabled=True,
-                key="query_field",
-                label_visibility="collapsed",
-            )
-
-        with cols[1]:
-            st.text("DOCUMENT:")
-            st.text_area(
-                "",
-                conversation["matching_document"],
-                height=300,
-                disabled=True,
-                key="doc_field",
-                label_visibility="collapsed",
-            )
-
-        # Simple button row at the bottom
-        button_cols = st.columns([1, 1, 3])
-        with button_cols[0]:
-            if button("⭐️ Artifact", "ctrl+e", label_artifact, hint=True):
-                label_artifact()
-        with button_cols[1]:
-            if button("❌ No-Artifact", "ctrl+r", label_no_artifact, hint=True):
-                label_no_artifact()
-    else:
-        st.success("All items have been processed!")
+            st.info("Skipped this conversation.")
+            st.rerun()
 else:
-    st.error(
-        "No data available. Please ensure your conversations.json file is in the ./data directory."
-    )
+    st.success("All conversations have been labeled!")
