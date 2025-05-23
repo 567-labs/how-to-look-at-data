@@ -26,7 +26,7 @@
 
 **2. Better Summaries**: Learn how to create domain-specific, concise summaries for Weights & Biases queries to produce more meaningful and actionable topic clusters.
 
-**3. Classifiers**: Learn how to create classifiers that can detect and monitor these topics that you've identified in production.
+**3. Classifiers**: Learn how to create classifiers that can detect and monitor these topics explicitly that you've identified in production.
 
 ## About
 
