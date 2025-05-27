@@ -31,3 +31,5 @@
 ## About
 
 This repository was created for the **AI Engineering Summit**. It demonstrates practical techniques for analyzing and improving Retrieval-Augmented Generation (RAG) systems using real-world data and modern topic modeling tools.
+
+The material in this repository comes from [improvingrag.com](https://improvingrag.com). If you want to learn more about improving your RAG applications, visit improvingrag.com for additional resources, tutorials, and best practices.
