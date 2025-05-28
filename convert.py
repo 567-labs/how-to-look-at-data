@@ -113,5 +113,24 @@ def convert(
     print("[green]Conversion complete![/green]")
 
 
+@app.command()
+def file(
+    notebook: str = typer.Argument(..., help="Path to the notebook file to convert"),
+    output: str = typer.Option(None, "--output", "-o", help="Output path for the markdown file")
+) -> None:
+    """Convert a single Jupyter notebook to markdown format."""
+    nb_path = Path(notebook)
+    if not nb_path.exists():
+        print(f"[red]Error: Notebook file '{notebook}' not found[/red]")
+        raise typer.Exit(1)
+    
+    if output:
+        md_path = Path(output)
+    else:
+        md_path = nb_path.with_suffix(".md")
+    
+    convert_notebook_to_md(str(nb_path), str(md_path))
+
+
 if __name__ == "__main__":
     app()

@@ -9,7 +9,11 @@ dependencies = [
     "ipykernel>=6.29.5",
     "ipython>=8.18.1",
     "kura>=0.4.4",
+    "nbformat>=5.10.4",
+    "rich>=13.9.4",
     "streamlit-shortcuts>=0.2.0",
+    "typer>=0.15.4",
+    "watchdog>=6.0.0",
 ]
 
 [tool.uv.sources]
