@@ -18,15 +18,39 @@
    ```
 
 3. Set up your environment variables:
-   - You will need a `GOOGLE_API_KEY` and an `OPENAI_API_KEY` for running this topic modelling proccess. We're using the OpenAI Text-Embedding-3-Small embeddings for clustering and the Gemini-2.0-flash models for summarisation (used by `kura`).
+   - You will need an `OPENAI_API_KEY` for running this topic modelling proccess. We're using the OpenAI Text-Embedding-3-Small embeddings for clustering and OpenAI models for summarisation (used by `kura`).
 
 ## Notebooks
 
-**1. Cluster Conversations**: Understand query patterns in large RAG applications using topic modeling and Kura, with real user queries from the Weights & Biases documentation. This notebook covers data preparation, clustering, and analysis of user query themes.
+### 1. [Cluster Conversations](./1.%20Cluster%20Conversations.ipynb)
 
-**2. Better Summaries**: Learn how to create domain-specific, concise summaries for Weights & Biases queries to produce more meaningful and actionable topic clusters.
+Discover patterns in 560 real user queries from Weights & Biases documentation using Kura's LLM-enhanced topic modeling.
 
-**3. Classifiers**: Learn how to create classifiers that can detect and monitor these topics explicitly that you've identified in production.
+**You'll learn:**
+
+- How topic modeling reveals query patterns invisible to keyword analysis
+- Converting raw queries into clustered insights using embeddings
+- Why default summaries miss critical domain-specific details
+
+### 2. [Better Summaries](./2.%20Better%20Summaries.ipynb)
+
+Transform generic clustering results into precise, actionable insights with custom summarization models.
+
+**You'll learn:**
+
+- Building domain-specific summary models for your use case
+- How better summaries dramatically improve clustering quality
+- Reducing noise to focus on what matters for your users
+
+### 3. [Classifiers](./3.%20Classifiers.ipynb)
+
+Build production-ready classifiers that achieve 90%+ accuracy through systematic prompt engineering.
+
+**You'll learn:**
+
+- Creating weak labels for rapid dataset creation
+- Iterative prompt improvement techniques
+- Deploying classifiers to monitor query patterns in real-time
 
 ## About
 
