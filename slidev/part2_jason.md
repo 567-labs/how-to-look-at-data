@@ -86,7 +86,7 @@ Give concrete examples: users asking for date range filters, or finance tickers 
 
 ## Quadrant Analysis Framework
 
-![Quadrant Analysis](CleanShot_2025-06-04_at_12.24.412x.png)
+![Quadrant Analysis](/images/cluster_quadrants.png)
 
 * **High Traffic + High Satisfaction** = Double down
 * **High Traffic + Low Satisfaction** = Fix immediately  
@@ -138,6 +138,8 @@ Emphasize that this creates a feedback loop where data analysis directly informs
 * **Deep-dive blog**: [improvingrag.com](http://improvingrag.com/)
 
 Drop in your chat export and start clustering today.
+
+![](/images/aie-look-at-data-qrcode.png)
 
 <!--
 Call to action: clone the repo, export your chat data, and begin tagging conversations to find actionable insights.

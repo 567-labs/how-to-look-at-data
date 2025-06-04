@@ -83,9 +83,7 @@ There are many decisions in setting up your retrieval system
 
 <v-click>
 
-<div class="mt-8">
-  <img src="/api/placeholder/600/300" alt="Generic benchmark vs Real data comparison" class="mx-auto rounded-lg shadow-lg">
-</div>
+![MTEB English Benchmark Results](/images/MTEB_english.png)
 
 </v-click>
 
@@ -161,40 +159,15 @@ Generative benchmarking revealed surprising insights
 
 <v-click>
 
-<div class="mt-8">
-  <img src="/api/placeholder/600/300" alt="W&B model performance comparison" class="mx-auto rounded-lg shadow-lg">
-</div>
+![Weights and Biases Performance Comparison](/images/recall.png)
 
 </v-click>
-
----
-
-# Case Study Results
-
-<div class="grid grid-cols-2 gap-8">
-
-<div>
-
-## Model Performance
-<img src="/api/placeholder/400/300" alt="Model performance chart" class="rounded-lg shadow-lg">
-
-</div>
-
-<div>
 
 ## Document Relevance
-<img src="/api/placeholder/400/300" alt="Document relevance analysis" class="rounded-lg shadow-lg">
-
-</div>
-
-</div>
-
-<v-click>
 
 <div class="mt-8 text-center">
+  
   <a href="https://research.trychroma.com/generative-benchmarking" target="_blank" class="text-blue-400 hover:text-blue-300">
-    📱 QR Code: research.trychroma.com/generative-benchmarking
+    [Generative Benchmarking](/images/chroma_qr.png)
   </a>
 </div>
-
-</v-click>
