@@ -86,46 +86,37 @@ src: part2_jason.md
 
 # Key Takeaways
 
-<div class="grid grid-cols-2 gap-8 mt-8">
-
-<div class="p-6 bg-gray-50 rounded-lg">
-
 ## Measure Inputs
-- Public benchmarks ≠ Your data
-- Fast evals make decisions easy
-- Focus on retrieval accuracy
-- Test on YOUR corpus
 
-</div>
-
-<div class="p-6 bg-gray-50 rounded-lg">
-
-## Measure Outputs
-- Chat logs are gold mines
-- Cluster to find patterns
-- Build classifiers for tracking
-- Close the feedback loop
-
-</div>
-
-</div>
-
-<v-click>
-
-<div class="mt-8 text-center">
-  <div class="text-2xl font-bold mb-4">Stop Guessing. Start Measuring.</div>
-  <div class="text-lg opacity-80">Your data has the answers – you just need to look</div>
-</div>
-
-</v-click>
+- **Stop using public benchmarks** - They're generic, overly clean, and LLMs have seen this data
+- **Build fast evals on YOUR corpus** - "If this is queried, this document should be returned"
+- **Focus on retrieval accuracy first** - Can you find it? Not "LLM as a judge over all your chunks"
+- **Use LLMs to generate synthetic queries** - Align models to write representative queries from your documents  
 
 ---
 
-# Start Building Today
+# Key Takeaways
 
-<div class="mt-8">
+## Measure Outputs
 
-## Resources
+- **Extract structure from conversations** - Use LLMs / Code to pull out frustration, errors, tools used, convo length etc.
+- **Cluster similar conversations** - Find patterns you can't see manually
+- **Compare KPIs per cluster** - Turn metrics into actionable segments
+
+---
+
+## The Systematic Approach
+
+1. **Start small** - Look at every conversation manually when you can
+2. **Extract structure** - Pull out frustration, errors, satisfaction scores
+3. **Find clusters** - Group similar conversations to reveal patterns
+4. **Compare metrics** - Understand which segments perform well/poorly
+5. **Build classifiers** - Monitor patterns in real-time
+6. **Make decisions** - Build, fix, or ignore based on data
+
+---
+
+# Resources
 
 - **Example notebooks**: [github.com/567-labs/how-to-look-at-data](https://github.com/567-labs/how-to-look-at-data)
 - **Fast evals research**: [research.trychroma.com/generative-benchmarking](https://research.trychroma.com/generative-benchmarking)
